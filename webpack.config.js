@@ -7,7 +7,8 @@ module.exports = {
     entry: './src/index.js',
     output: {
         filename: 'bundle.js',
-        path: path.join(__dirname, 'dist')
+        path: path.join(__dirname, 'dist'),
+        // publicPath: path.join(__dirname, '/') 
     },
     module: {
         rules: [
@@ -18,14 +19,27 @@ module.exports = {
                     fallback: "style-loader",
                     use: "css-loader"
                 })
+            },
+            {
+                test: /\.ttf$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        publicPath: './',
+                        outputPath: 'fonts/'
+                    }  
+                }
             }
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            title: 'foo'
+        }),
         new ExtractTextPlugin("styles.css"),
-        new WebpackCriticalFontPlugin({
-            cssFile: `path.join(__dirname, 'dist')`
-        })
+        // new WebpackCriticalFontPlugin({
+        //     cssFile: `path.join(__dirname, 'dist')`
+        // })
     ]
 }
